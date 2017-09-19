@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { Text } from 'react-native';
 import { Card, CardSection, Input, Button } from './common/Index';
 import { connect } from 'react-redux';
-import { emailChanged, passwordChanged, loginUser } from '../actions/Index';
+import { emailChanged, passwordChanged, loginUser,
+  networkFailed } from '../actions/Index';
 
 class LoginForm extends Component{
   onEmailChange(text) {
@@ -32,7 +33,10 @@ class LoginForm extends Component{
 							value={this.props.password}
 						/>
 					</CardSection>
-          <Text> { this.props.error } </Text>
+          <CardSection>
+            <Text> { this.props.error } </Text>
+            <Text> { this.props.networkError } </Text>
+          </CardSection>
           <CardSection>
             <Button onPress={this.onButtonPress.bind(this)}>
               Login
@@ -47,10 +51,11 @@ mapStateToProps = state => {
 	return {
 		email: state.auth.email,
     password: state.auth.password,
-    error: state.auth.error
+    error: state.auth.error,
+    networkError: state.auth.networkError
 	};
 };
 
 export default connect(mapStateToProps, {
-	emailChanged, passwordChanged, loginUser
+	emailChanged, passwordChanged, loginUser, networkFailed
 })(LoginForm);

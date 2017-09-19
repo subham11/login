@@ -5,7 +5,8 @@ import {
   PASSWORD_CHANGED,
   LOGIN_USER_SUCCESS,
   LOGIN_USER_FAIL,
-  LOGIN_USER
+  LOGIN_USER,
+  NETWORK_FAILED
 } from './types';
 
 export const emailChanged = (text) => {
@@ -25,11 +26,13 @@ export const passwordChanged = (text) => {
 export const loginUser = ({ email, password }) => {
   return (dispatch) => {
     dispatch({ type: LOGIN_USER });
-    axios.get('http://127.0.0.1:8000/login?user='+ email +'&pwd=' + password)
-      .then(response =>
-        isValidUser(response.data[0]['valid'],
-        dispatch,
-        email));
+
+      axios.get('http://192.168.0.4:8000/login?user='+ email +'&pwd=' + password)
+        .then(response =>
+          isValidUser(
+          dispatch,
+          email)).catch(error => networkFailed(dispatch, error));
+
       //.then(response => console.log(response));
       //.catch(error => networkFailed(dispatch, error)));
 		  //.then((response) => isValidUser(response.data[0]['valid'], dispatch, email)
@@ -37,8 +40,9 @@ export const loginUser = ({ email, password }) => {
     };
 };
 
-const isValidUser = (loginValue, dispatch, user) => {
-  if(loginValue === 1){
+const isValidUser = (dispatch, user) => {
+  console.log('response >>' + response.data);
+  if(response.data[0]['valid'] === 1){
     dispatch({
       type: LOGIN_USER_SUCCESS,
       payload: user
@@ -54,6 +58,8 @@ const loginUserFail = (dispatch) => {
 };
 
 const networkFailed = (dispatch, error) => {
-  console.log(error);
-  dispatch({ type: NETWORK_FAILED, payload:error });
+  console.log('Network Error >>'+ error);
+  dispatch({ type: NETWORK_FAILED,
+    payload: error
+  });
 };

@@ -10,10 +10,12 @@ const INITIAL_STATE = {
   email: '',
   password: '',
 	user: '',
-	error: ''
+	error: '',
+	networkError: ''
 };
 
 export default (state = INITIAL_STATE, action) => {
+	console.log(action);
 	switch(action.type) {
 		case EMAIL_CHANGED:
 			return { ...state, email: action.payload };
@@ -24,7 +26,7 @@ export default (state = INITIAL_STATE, action) => {
 		case LOGIN_USER_FAIL:
 			return { ...state, error: 'Authnetiction Failed!', password: ''};
 		case NETWORK_FAILED:
-			return { ...state, error: action.payload, password: ''};
+			return { ...state, networkError: action.payload, password: ''};
 		default:
 			return state;
 	}
