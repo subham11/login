@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { Text } from 'react-native';
-import { Card, CardSection, Input, Button } from './common/Index';
+import { Card, CardSection, Input, Button, Spinner } from './common/Index';
 import { connect } from 'react-redux';
-import { emailChanged, passwordChanged, loginUser,
-  networkFailed } from '../actions/Index';
+import { emailChanged, passwordChanged,
+  loginUser, networkFailed } from '../actions/Index';
 
 class LoginForm extends Component{
   onEmailChange(text) {
@@ -16,6 +16,16 @@ class LoginForm extends Component{
     const {email, password} = this.props;
     this.props.loginUser({ email, password });
   }
+  renderButton(){
+    if(this.props.loading)
+      return (<Spinner size="large" /> );
+    else {
+      return (
+        <Button onPress={this.onButtonPress.bind(this)}>
+          Login
+        </Button>);
+    }
+  }
   render() {
     return (
       <Card>
@@ -27,32 +37,37 @@ class LoginForm extends Component{
         <CardSection>
 						<Input
 							secureTextEntry
-							label="Passw"
+							label="Password"
 							placeholder="password"
 							onChangeText={this.onPasswordChange.bind(this)}
 							value={this.props.password}
 						/>
 					</CardSection>
+            <Text style = {styles.errorTextStyle}>
+              { this.props.error }
+            </Text>
           <CardSection>
-            <Text> { this.props.error } </Text>
-            <Text> { this.props.networkError } </Text>
-          </CardSection>
-          <CardSection>
-            <Button onPress={this.onButtonPress.bind(this)}>
-              Login
-            </Button>
+            {this.renderButton()}
           </CardSection>
       </Card>
     );
   }
 }
 
+const styles = {
+  errorTextStyle:{
+    fontSize:20,
+    alignSelf:'center',
+    color:'red'
+  }
+};
+
 mapStateToProps = state => {
 	return {
 		email: state.auth.email,
     password: state.auth.password,
     error: state.auth.error,
-    networkError: state.auth.networkError
+    loading: state.auth.loading
 	};
 };
 
