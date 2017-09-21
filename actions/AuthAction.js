@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { Actions } from 'react-native-router-flux';
 
 import {
   EMAIL_CHANGED,
@@ -41,6 +42,7 @@ const isValidUser = (response, dispatch, user) => {
       type: LOGIN_USER_SUCCESS,
       payload: user
     });
+    Actions.employee();
   }
   else {
     loginUserFail(dispatch);

@@ -4,8 +4,9 @@ import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import reducers from './reducers/Index';
 import ReduxThunk from 'redux-thunk';
-import { Header } from './components/common/Index';
-import LoginForm from './components/LoginForm';
+//import { Header } from './components/common/Index';
+//import LoginForm from './components/LoginForm';
+import Router from './Router';
 
 export default class App extends React.Component {
   render() {
@@ -15,10 +16,7 @@ export default class App extends React.Component {
         reducers,
         {},
         applyMiddleware(ReduxThunk))}>
-        <View>
-          <Header headerText ='Login' />
-          <LoginForm />
-        </View>
+          <Router />
       </Provider>
     );
   }
