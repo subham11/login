@@ -15,7 +15,7 @@ const RouterComponent = () => {
         onLeft = { () => Actions.employeeCreate() }
         leftTitle = 'Add'
         rightTitle = 'Logout!'
-        onRight = { () => Actions.login() } intial/>
+        onRight = { () => Actions.login({ type: 'reset' }) } intial/>
         <Scene key = "employeeCreate" component = { EmployeeCreate } title = "Add Employee" />
       </Scene>
     </Router>
